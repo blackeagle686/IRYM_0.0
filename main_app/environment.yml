@@ -1,0 +1,43 @@
+name: irym_0.0.0
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - pillow
+  - opencv
+  - requests
+  - flask
+  - django
+  - fastapi
+  - uvicorn
+  - jupyterlab
+  - notebook
+  - ipywidgets
+  - tqdm
+  - nltk
+  - spacy
+  - beautifulsoup4
+  - aiohttp
+  - pip:
+    - torch
+    - torchvision
+    - transformers
+    - datasets
+    - diffusers
+    - accelerate
+    - safetensors
+    - scipy
+    - gradio
+    - streamlit
+    - python-dotenv
+    - openai
+    - huggingface_hub
+    - soundfile
+    - librosa
