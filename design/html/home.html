@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLM Image Generator</title>
+  <link rel="stylesheet" href="../css/home.css" />
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <button id="toggleSidebar">☰</button>
+            <img src="https://via.placeholder.com/40" alt="User" />
+        </div>
+        <div class="header-right">
+           LLM Image Generator
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar hidden" id="sidebar">
+            <ul>
+                <li><a href="#">👤 User Account</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+                <li><a href="#">🖼️ Last Designs</a></li>
+                <li><a href="#">🚪 Logout</a></li>
+            </ul>
+        </aside>
+
+        <div class="container">
+            <div class="categories">
+                <button class="category">Animation</button>
+                <button class="category">Nature</button>
+                <button class="category">City</button>
+                <button class="category">Home design</button>
+            </div>
+
+            <div id="result">
+                <h2>Generated Image</h2>
+                <img id="generatedImage" src="" alt="Generated result will appear here" />
+            </div>
+            
+            <div id="suggestions" class="hidden">
+                <p>AI Suggestions:</p>
+                <ul id="suggestionList"></ul>
+            </div>
+
+            <form id="promptForm">
+                <label for="userPrompt">Enter your idea:</label>
+                <textarea id="userPrompt" placeholder="Describe the image you want..." required></textarea>
+                <button type="submit">Generate Image</button>
+            </form>
+
+
+        </div>
+    </div>
+  <script src="../js/home.js"></script>
+</body>
+</html>
