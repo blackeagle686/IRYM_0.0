@@ -10,6 +10,10 @@ from transformers import (
     Trainer
 )
 
+
+CSV_FILE = "../datasets/text2text.csv"
+OUTPUT_DIR = "./llm_finetuned"
+
 class LLMTrainer:
     def __init__(self, model_name="distilgpt2"):
         os.environ["WANDB_DISABLED"] = "true"
@@ -32,7 +36,7 @@ class LLMTrainer:
         tokens["labels"] = tokens["input_ids"].copy()
         return tokens
 
-    def train(self, dataset_path, output_dir="./llm_finetuned", batch_size=4, epochs=4):
+    def train(self, dataset_path, output_dir=OUTPUT_DIR, batch_size=4, epochs=4):
         raw_dataset = self.load_dataset(dataset_path)
         tokenized_dataset = raw_dataset.map(self.format_and_tokenize)
 
@@ -56,4 +60,6 @@ class LLMTrainer:
         # Save fine-tuned model
         self.model.save_pretrained(output_dir)
         self.tokenizer.save_pretrained(output_dir)
-        print(f"✅ Model saved to: {output_dir}")
+        print(f"Model saved to: {output_dir}")
+        
+        
