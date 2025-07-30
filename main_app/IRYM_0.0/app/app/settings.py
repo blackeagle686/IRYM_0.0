@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os 
+import environ
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,6 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'user',
+    'rest_framework',
+    'design_project', 
+    'fast_design', 
+    "widget_tweaks",
+
     
 ]
 
@@ -116,9 +126,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static') ]  # لو عندك مجلد static في المشروع
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # مجلد هيجمع فيه كل ملفات static
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -127,3 +139,55 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media Files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
+
+# Read the variable
+NGROK_KEY = env("NGROK_KEY")
+
+
+
+# This for handling templates .html paths use it in Views 
+
+TEMPLATES_PATHS = {
+    "user":{
+        "user_page": "pages/user/user_page.html",
+        "user_settings": "pages/user/settings.html",
+    }, 
+    "edit":{
+        "edit_room": "pages/edit/edit_room.html", 
+        "edit_with_ai": "pages/edit/edit_with_ai.html",
+        "fast_design_edit_with_ai": "pages/edit/fast_design_edit_with_ai.html", 
+    },
+    "generate":{
+        "fast_design_generate": "pages/generate/fast_design.html",
+        "project": "pages/generate/project.html", 
+    }, 
+    "history":{
+        "fast_design_history": "pages/history/fast_design_history.html", 
+        "project_history": "pages/history/projects_history.html",
+    }, 
+    "forms":{
+        "new_fast_design":"forms/new_fast_design.html",
+        "new_project": "forms/new_project.html", 
+        "login": "forms/login.html",
+        "signup": "forms/signup.html", 
+    },
+    "admin":{
+        "admin_dash_bord": "pages/admin/dash_bord.html", 
+        "user_logs": "pages/admin/user_logs.html",
+        "projects_logs": "pages/admin/project_logs.html",
+        "fast_design_logs": "pages/admin/generation_logs.html", 
+        
+    },
+    "details":{
+        "project_details": "pages/details/project_detail.html",
+    },
+    "base": "base.html",
+    "hello": "hello.html",
+    
+}

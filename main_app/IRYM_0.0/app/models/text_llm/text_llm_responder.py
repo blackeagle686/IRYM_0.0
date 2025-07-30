@@ -1,8 +1,11 @@
-# main_app/llm_responder.py
-
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
-MODEL_PATH = "./llm_finetuned"  # Replace with the actual path to your model
+import os
+
+# دايمًا استخدم المسار المطلق
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "llm_finetuned")  # Replace with actual model folder
+
 class LLMResponder:
     def __init__(self, model_path=MODEL_PATH):
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
@@ -27,7 +30,15 @@ class LLMResponder:
             )
 
         decoded = self.tokenizer.decode(output[0], skip_special_tokens=True)
-        # ممكن نقطع الـ response فقط من النص الكامل
         if "<|response|>" in decoded:
             return decoded.split("<|response|>")[1].strip()
         return decoded
+
+# حمل الموديل مرة واحدة فقط
+responder = LLMResponder()
+
+# اختبر:
+# if __name__ == "__main__":
+#     prompt = "Describe a red car."
+#     response = responder.generate_response(prompt)
+#     print(response)

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <!-- Main Content -->
+  <main class="main-content" id="main-content">
+    <h1 class="mb-4">📝 Loggings</h1>
+
+    {% if logs %}
+      <div class="table-responsive">
+        <table class="table table-dark table-bordered table-hover table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">user</th>
+              <th scope="col">chat_id</th>
+              <th scope="col">Prompt</th>
+              <th scope="col">Response</th>
+              <th scope="col">Time</th>
+              <th scope="col">Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for log in logs %}
+              <tr>
+                <th scope="row">{{ log.id }}</th>
+                <th scope="row">{{ log.user.username }}</th>
+                <th scope="row">{{ log.chat.id }}</th>
+                <td>{{ log.prompt }}</td>
+                <td>{{ log.response }}</td>
+                <td>{{ log.timestamp }}</td>
+                <td>{{ log.log_notes }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="no-logs mt-3">
+        <p>There are no logs yet.</p>
+      </div>
+    {% endif %}
+
+    <h2 class="mb-3 mt-5">🧑‍💻 User Activity Logs</h2>
+
+    <div class="table-responsive">
+      <table class="table table-dark table-bordered table-hover table-striped align-middle" id="user-logs-table">
+        <thead>
+          <tr>
+            <th>Logs ID</th>
+            <th>User</th>
+            <th>Type</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody id="user-logs-body">
+          <tr><td colspan="4" class="text-center text-muted">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </main>
+
+  <script>
+  async function fetchUserLogs() {
+    try {
+      const response = await fetch('{% url "user_logs" %}');
+      if (!response.ok) throw new Error("Failed to load");
+
+      const data = await response.json();
+
+      const tbody = document.getElementById('user-logs-body');
+      tbody.innerHTML = ""; // clear previous
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">No user logs available.</td></tr>`;
+        return;
+      }
+
+      data.forEach(log => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${log.id}</td>
+          <td>${log.username || "Anonymous"}</td>
+          <td>${log.op_type}</td>
+          <td>${log.timestamp}</td>
+        `;
+        tbody.appendChild(row);
+      });
+
+    } catch (error) {
+      document.getElementById('user-logs-body').innerHTML = `
+        <tr><td colspan="4" class="text-center text-danger">⚠️ Error loading logs: ${error.message}</td></tr>
+      `;
+    }
+  }
+
+  // استدعِ الدالة عند تحميل الصفحة
+  document.addEventListener("DOMContentLoaded", fetchUserLogs);
+</script>
+
+{% endblock  %}
+  

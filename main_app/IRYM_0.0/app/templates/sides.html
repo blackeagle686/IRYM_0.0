@@ -1,0 +1,124 @@
+{% load static %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark px-3 d-flex justify-content-between align-items-center"
+     style="background-color: #222831; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+
+  <!-- Left Side: Toggle + Welcome Message -->
+  <div class="d-flex align-items-center gap-3">
+    <button class="btn"
+            onclick="toggleSidebar()"
+            style="
+              border: 1px solid #00ADB5;
+              color: #00ADB5;
+              font-weight: bold;
+              background-color: transparent;
+              border-radius: 6px;
+              padding: 6px 12px;
+              transition: all 0.3s ease;
+            "
+            onmouseover="this.style.backgroundColor='#00ADB5'; this.style.color='#222831';"
+            onmouseout="this.style.backgroundColor='transparent'; this.style.color='#00ADB5';">
+      ☰
+    </button>
+
+    {% if user.is_authenticated %}
+      <span style="color: #2e8580ff;">
+        Welcome <span style="color: #00ADB5; font-weight:bolder;">{{ user.get_full_name }}</span>
+      </span>
+    {% else %}
+      <span style="color: #FF6B6B;">Not logged in</span>
+    {% endif %}
+  </div>
+
+  <!-- Right Side: Icon -->
+  <div>
+    <img src="{% static 'images/my_icon_nobg.png' %}" 
+         alt="Site Icon" 
+         style="height: 56px; filter: drop-shadow(0 0 4px rgba(0,173,181,0.5));">
+  </div>
+</nav>
+
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">📂 Menu</h5>
+    <button class="btn btn-sm btn-outline-light" onclick="toggleSidebar()">✖</button>
+  </div>
+  
+<ul class="nav flex-column mt-3">
+  {% if user.is_authenticated %}
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'user_page' user.id %}">
+        <i class="bi bi-person-fill text-info me-2"></i> Profile
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'edit_with_ai_upload_image'  %}">
+        <i class="fas fa-wand-magic-sparkles text-warning"></i> Edit with AI <br> <span style="color:orange;"> new ✨ </span> 
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'new_design' %}">
+        <i class="bi bi-vector-pen text-success me-2"></i> Fast Design
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'new_project' %}">
+        <i class="bi bi-folder-plus text-primary me-2"></i> New Project
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'fast_history'  %}">
+        <i class="bi bi-clock-fill text-secondary me-2"></i> Design History
+      </a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'projects_history' %}">
+        <i class="bi bi-clock-fill text-secondary me-2"></i> Projects History
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'settings' user.id %}">
+        <i class="bi bi-sliders text-primary me-2"></i> Settings
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'logout' %}">
+        <i class="bi bi-door-open-fill text-danger me-2"></i> Logout
+      </a>
+    </li>
+  {% else %}
+    <li class="nav-item text-danger">
+      <i class="bi bi-shield-lock-fill me-2"></i> Please log in to see the menu.
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'login' %}">
+        <i class="bi bi-box-arrow-in-right text-success me-2"></i> Login
+      </a>
+    </li>
+  {% endif %}
+  <li class="nav-item">
+    <button id="theme-toggle" class="btn btn-sm btn-outline-info w-100 mt-3">
+      <i class="bi bi-moon-fill me-2"></i> Switch Theme
+    </button>
+  </li>
+</ul>
+
+
+
+</div>
+<script>
+
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    sidebar.classList.toggle('active');
+    mainContent.classList.toggle('shifted');
+  }
+
+  // ممكن تناديها عند تحميل الصفحة لو حبيت
+  // window.onload = fetchChats;
+</script>

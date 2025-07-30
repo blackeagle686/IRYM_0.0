@@ -9,30 +9,39 @@ from transformers import (
     TrainingArguments,
     Trainer
 )
+import torch
 
-
-CSV_FILE = "../datasets/text2text.csv"
-OUTPUT_DIR = "./llm_finetuned"
+# Constants
+CSV_FILE = "../datasets/prompt_recommendations.csv"
+OUTPUT_DIR = "./llm_finetuned2"
+MODEL_NAME = "microsoft/phi-2"
 
 class LLMTrainer:
-    def __init__(self, model_name="distilgpt2"):
+    def __init__(self, model_name=MODEL_NAME):
         os.environ["WANDB_DISABLED"] = "true"
+
         self.model_name = model_name
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(model_name)
 
-        # Fix padding
+        # Padding fix for Phi-2
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.model.config.pad_token_id = self.tokenizer.eos_token_id
 
     def load_dataset(self, csv_path):
         df = pd.read_csv(csv_path)
+        df = df[['Prompt', "Recommendation"]]
         dataset = Dataset.from_pandas(df)
         return dataset
 
     def format_and_tokenize(self, example):
-        text = f"<|prompt|>{example['prompt']}<|response|>{example['response']}"
-        tokens = self.tokenizer(text, truncation=True, padding="max_length", max_length=128)
+        text = f"<|prompt|>{example['Prompt']}<|response|>{example['Recommendation']}"
+        tokens = self.tokenizer(
+            text,
+            truncation=True,
+            padding="max_length",
+            max_length=256  # Increased for larger JSONs
+        )
         tokens["labels"] = tokens["input_ids"].copy()
         return tokens
 
@@ -42,11 +51,13 @@ class LLMTrainer:
 
         training_args = TrainingArguments(
             output_dir=output_dir,
-            run_name="debug_run",
+            run_name="json_finetune_run",
             per_device_train_batch_size=batch_size,
             num_train_epochs=epochs,
-            logging_steps=10,
-            fp16=True  # GPU only
+            logging_steps=50,
+            save_strategy="no",
+            fp16=torch.cuda.is_available(),  # Automatically use FP16 if GPU is available
+            report_to="none"
         )
 
         trainer = Trainer(
@@ -57,9 +68,13 @@ class LLMTrainer:
 
         trainer.train()
 
-        # Save fine-tuned model
+        # Save fine-tuned model and tokenizer
         self.model.save_pretrained(output_dir)
         self.tokenizer.save_pretrained(output_dir)
-        print(f"Model saved to: {output_dir}")
-        
-        
+        print(f"\n Model and tokenizer saved to: {output_dir}")
+
+
+# ===== Run training =====
+if __name__ == "__main__":
+    trainer = LLMTrainer()
+    trainer.train(dataset_path=CSV_FILE)

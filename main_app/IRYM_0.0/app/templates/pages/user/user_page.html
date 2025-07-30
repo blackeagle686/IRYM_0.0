@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<!-- Main Content -->
+<main class="main-content" id="main-content" style="color: #EEEEEE;">
+  <div class="container my-5">
+
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <!-- User Profile Card -->
+        <div class="profile-card text-center" 
+            style="background-color: #2B2F38; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
+          
+        <!-- Buttons on hover -->
+        <a href="{% url 'settings' user.id %}" class="action-btn btn-settings" title="Settings">
+          <i class="fas fa-sliders-h"></i>
+        </a>
+
+        <a href="{% url 'new_design' %}" class="action-btn btn-fastdesign" title="Fast Design">
+          <i class="fas fa-rocket"></i>
+        </a>
+
+        <a href="{% url 'edit_with_ai_upload_image' %}" class="action-btn btn-editai" title="Edit with AI">
+          <i class="fas fa-wand-magic-sparkles"></i>
+        </a>
+
+        <a href="{% url 'new_project' %}" class="action-btn btn-newproject" title="New Project">
+          <i class="fas fa-folder-plus"></i>
+        </a>
+
+        <a href="{% url 'projects_history' %}" class="action-btn btn-history" title="Projects History">
+          <i class="fas fa-clock-rotate-left"></i>
+        </a>
+
+        <a href="{% url 'fast_history' %}" class="action-btn btn-fast-history" title="Design History">
+          <i class="fas fa-layer-group"></i>
+        </a>
+
+
+          <!-- User Image -->
+          <img src="{{ user_data.image }}" alt="User Image" 
+              class="profile-img"
+              style="
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-bottom: 15px;
+                border: 3px solid #00ADB5;
+                box-shadow: 0 0 10px rgba(0, 173, 181, 0.4);
+              ">
+
+          <!-- User Name and Username -->
+          <h3 style="margin-bottom: 5px; color:cyan;">{{ user_data.fname }} {{user_data.lname }}</h3>
+          <p style="color: #AAAAAA;">{{ user_data.username }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Last Chats -->
+    <div class="row mt-5">
+      <div class="col-md-12">
+        
+        <h4 class="section-title" 
+            style="
+            color: #00ADB5; 
+              font-weight: 600; 
+              border-left: 4px solid #00ADB5; 
+              padding-left: 12px;
+              margin-bottom: 20px;
+            ">
+          Recent Projects
+        </h4>
+        {% if projects %}
+          {% for project in projects %}
+            <div class="log-card d-flex justify-content-between align-items-center flex-wrap"
+            style="
+            background-color: #2B2F38; 
+            border-radius: 10px; 
+            padding: 16px 20px; 
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+            ">
+            <a
+            href="{% url 'project_detail' project.id %}"
+            class="btn flex-grow-1 text-start me-3 mb-2"
+            style="
+            background-color: #393E46; 
+            color: #EEEEEE;
+            border: 1px solid #00ADB5;
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 10px 14px;
+            transition: all 0.3s ease;
+                      "
+                      onmouseover="this.style.backgroundColor='#00ADB5'; this.style.color='#222831';"
+                      onmouseout="this.style.backgroundColor='#393E46'; this.style.color='#EEEEEE';">
+                      {{ project.title }}
+                    </a>
+              <small style="color: #AAAAAA; font-size: 13px;">{{ project.created_at }}</small>
+            </div>
+            
+            
+            {% endfor %}
+            {% else %}
+            <p class="text-muted" style="color: #AAAAAA;">No recent chats.</p>
+        {% endif %}
+        <h4 class="section-title" 
+            style="
+              color: #00ADB5; 
+              font-weight: 600; 
+              border-left: 4px solid #00ADB5; 
+              padding-left: 12px;
+              margin-bottom: 20px;
+            ">
+           Last Fast Design
+        </h4>
+  
+        {% if user_data.chats %}
+          {% for chat in user_data.chats %}
+            <div class="log-card d-flex justify-content-between align-items-center flex-wrap"
+                 style="
+                   background-color: #2B2F38; 
+                   border-radius: 10px; 
+                   padding: 16px 20px; 
+                   margin-bottom: 12px;
+                   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+                 ">
+              <a  class="btn flex-grow-1 text-start me-3 mb-2"
+                      style="
+                        background-color: #393E46; 
+                        color: #EEEEEE;
+                        border: 1px solid #00ADB5;
+                        border-radius: 8px;
+                        font-weight: 500;
+                        padding: 10px 14px;
+                        transition: all 0.3s ease;
+                      "
+                      onmouseover="this.style.backgroundColor='#00ADB5'; this.style.color='#222831';"
+                      onmouseout="this.style.backgroundColor='#393E46'; this.style.color='#EEEEEE';">
+                {{ chat.message }}
+              </a>
+              <small style="color: #AAAAAA; font-size: 13px;">{{ chat.timestamp }}</small>
+            </div>
+            
+  
+          {% endfor %}
+        {% else %}
+          <p class="text-muted" style="color: #AAAAAA;">No recent chats.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+
+
+{% endblock  %}
+  

@@ -5,9 +5,13 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('home.urls')),  # ← هننشئه كمان شوية
+    path('', include('home.urls')),                         # Admin
+    path('user/', include('user.urls')),                    # Home
+    path('project/', include('design_project.urls')),       # User
+    path('fast_design/', include('fast_design.urls')),      # Fast Design
+    
 ]
 
-# دعم ملفات الصور المرفوعة
+# handling the media urls
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

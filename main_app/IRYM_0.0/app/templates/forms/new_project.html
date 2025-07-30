@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content container py-4" id="main-content">
+  <h2 class="section-title text-center mb-4">Create New Design Project</h2>
+
+  <div class="row align-items-center">
+    <!-- Form Column -->
+    <div class="col-md-6">
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="id_title" class="form-label">Project Title</label>
+          <input type="text" name="title" id="id_title" class="form-control" placeholder="Project Title" value="{{ form.title.value|default:'' }}">
+        </div>
+
+        <div class="mb-3">
+          <label for="id_description" class="form-label">Description</label>
+          <textarea name="description" id="id_description" rows="3" class="form-control" placeholder="Describe the project">{{ form.description.value|default:'' }}</textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="id_goal" class="form-label">Design Goal</label>
+          <input type="text" name="goal" id="id_goal" class="form-control" placeholder="e.g. Logo, Poster..." value="{{ form.goal.value|default:'' }}">
+        </div>
+
+        <div class="mb-3">
+          <label for="id_status" class="form-label">Status</label>
+          <select name="status" id="id_status" class="form-select">
+            {% for value, label in form.fields.status.choices %}
+              <option value="{{ value }}" {% if form.status.value == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-generate mt-3">Create Project</button>
+      </form>
+    </div>
+
+    <!-- Image Column -->
+    <div class="col-md-6 d-flex justify-content-center align-items-center">
+      <div class="image-specific-wrapper">
+        <img src="{% static 'images/my_icon_nobg.png' %}" class="img-specific-cover" alt="My Icon">
+      </div>
+    </div>
+  </div>
+
+  <!-- Images Column (next to the form) -->
+  <div class="row">
+    <h4 style="text-align:center; color:cyan; font-weight:bolder; text-shadow:2px 2px 3px gold; background-image:linear-gradient(45deg, #006267cf, #006267cf); padding:5px; border-radius:20px;"> Descover The Power of AI </h4>
+    <div class="row">
+      <!-- Cities -->
+      <div class="col-6 mb-4">
+        <h5 class="text-center text-light mb-3">🌆 Cities</h5>
+        <div class="d-flex flex-wrap justify-content-center">
+          <img src="{% static 'images/cit1.jpg' %}" class="img-thumb-style">
+          <img src="{% static 'images/cit2.jpg' %}" class="img-thumb-style">
+          <img src="{% static 'images/cit3.jpg' %}" class="img-thumb-style">
+          <img src="{% static 'images/cit4.jpg' %}" class="img-thumb-style">
+        </div>
+      </div>
+
+      <!-- Nature -->
+      <div class="col-6 mb-4">
+        <h5 class="text-center text-light mb-3">🌿 Nature</h5>
+        <div class="d-flex flex-wrap justify-content-center">
+          <img src="{% static 'images/nat1.jpg' %}" class="img-thumb-style">
+          <img src="{% static 'images/nat2.jpg' %}" class="img-thumb-style">
+          <img src="{% static 'images/nat3.jpg' %}" class="img-thumb-style">
+          <img src="{% static 'images/nat4.jpg' %}" class="img-thumb-style">
+        </div>
+      </div>
+
+      <!-- Animations -->
+      <div class="col-6 mb-4">
+        <h5 class="text-center text-light mb-3">🎬 Animations</h5>
+        <div class="d-flex flex-wrap justify-content-center">
+          <img src="{% static 'images/anm1' %}" class="img-thumb-style">
+          <img src="{% static 'images/anm2.jpeg' %}" class="img-thumb-style">
+          <img src="{% static 'images/anm3.jpg' %}" class="img-thumb-style">
+          <img src="{% static 'images/anm4.jpg' %}" class="img-thumb-style">
+        </div>
+      </div>
+
+      <!-- Machines -->
+      <div class="col-6 mb-4">
+        <h5 class="text-center text-light mb-3">⚙️ Machines</h5>
+        <div class="d-flex flex-wrap justify-content-center">
+          <img src="{% static 'images/mch1.jpeg' %}" class="img-thumb-style">
+          <img src="{% static 'images/mch2' %}" class="img-thumb-style">
+          <img src="{% static 'images/mch3.jpeg' %}" class="img-thumb-style">
+          <img src="{% static 'images/mch4' %}" class="img-thumb-style">
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

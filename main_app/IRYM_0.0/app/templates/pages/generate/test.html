@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content container py-4" id="main-content" style="color: #EEEEEE;">
+
+  <!-- Form -->
+  <form id="generate-form" method="POST" class="row g-3 align-items-center">
+    {% csrf_token %}
+
+    {% if design %}
+      <div class="col-12">
+        <div class="alert" 
+            title="This is your last prompt" 
+            style="background-color: #2B2F38; color: #EEEEEE; border-left: 4px solid #00ADB5; box-shadow: 0 2px 6px rgba(0, 173, 181, 0.1);">
+          <strong>{{ user.first_name }}:</strong> {{ design.message }}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Prompt Input -->
+    <div class="col-md-9 col-sm-12">
+      <input 
+        type="text" 
+        id="prompt" 
+        name="prompt" 
+        placeholder="{% if design %}{{ design.message }}{% else %}Describe your scene{% endif %}" 
+        required 
+        class="form-control"
+        style="
+          background-color: #393E46; 
+          color: #EEEEEE; 
+          border: 1px solid #00ADB5;
+          border-radius: 8px;
+          padding: 12px;
+          box-shadow: 0 0 6px rgba(0, 173, 181, 0.15);
+        ">
+    </div>
+
+    <!-- Generate Button -->
+    <div class="col-md-3 col-sm-12 d-grid">
+      <button type="submit" class="btn" 
+        style="
+          background-color: #00ADB5; 
+          color: #222831; 
+          font-weight: 600; 
+          padding: 12px; 
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 173, 181, 0.3);
+          transition: all 0.2s ease-in-out;
+        "
+        onmouseover="this.style.backgroundColor='#00cfd6'; this.style.boxShadow='0 0 14px rgba(0, 173, 181, 0.6)'"
+        onmouseout="this.style.backgroundColor='#00ADB5'; this.style.boxShadow='0 0 10px rgba(0, 173, 181, 0.3)'"
+      >
+        Generate
+      </button>
+    </div>
+  </form>
+
+  <!-- Recommendations -->
+  <section class="mt-5">
+    <h5 style="color: #00ADB5;">What do you think about these features?</h5>
+    <div id="response-box" class="rounded p-3 mt-2" 
+         style="
+           background-color: #2B2F38; 
+           color: #CCCCCC; 
+           border: 1px solid #393E46; 
+           box-shadow: 0 0 8px rgba(0, 173, 181, 0.1);
+         ">
+      Start generating to see suggestions here.
+    </div>
+  </section>
+
+  <!-- Status + Image -->
+  <div class="mt-4 text-center">
+    <div id="status" class="mb-3 fw-bold" style="color: #AAAAAA;"></div>
+
+    <div id="image-wrapper" class="d-flex justify-content-center align-items-center" style="min-height: 300px;">
+      {% if design and design.last_img %}
+        <img 
+          src="{{ design.last_img }}"
+          id="result-img" 
+          alt="Generated image preview" 
+          class="img-fluid rounded shadow"
+          style="
+            max-width: 100%; 
+            border: 2px solid #00ADB5;
+            border-radius: 12px;
+            background-color: #2B2F38;
+            padding: 6px;
+            box-shadow: 0 0 12px rgba(0, 173, 181, 0.25);
+          " />
+      {% else %}
+        <img 
+          id="result-img" 
+          alt="Generated image preview" 
+          class="img-fluid rounded shadow" 
+          style="
+            max-width: 100%; 
+            display: none; 
+            border: 2px solid #00ADB5;
+            border-radius: 12px;
+            background-color: #2B2F38;
+            padding: 6px;
+            box-shadow: 0 0 12px rgba(0, 173, 181, 0.25);
+          " />
+      {% endif %}
+    </div>
+  </div>
+
+</main>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const form = document.getElementById("generate-form");
+    const statusDiv = document.getElementById("status");
+    const img = document.getElementById("result-img");
+    const responseBox = document.getElementById("response-box");
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      statusDiv.textContent = "🧠 Generating image...";
+      img.style.display = "none";
+      responseBox.textContent = "";
+
+      const formData = new FormData(form);
+      const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+      // 2. Generate recommendation
+      try {
+        const response1 = await fetch("{% url 'generate_recommendation' %}", {
+          method: "POST",
+          body: formData
+        });
+        const data1 = await response1.json();
+        responseBox.textContent = data1.response || "No recommendations found.";
+      } catch (err) {
+        responseBox.textContent = "⚠️ Error fetching recommendations: " + err.message;
+      }
+
+      // 3. Generate image
+      try {
+        const response2 = await fetch(`{% url 'generate_image_view' design.id %}`, {
+          method: "POST",
+          body: formData
+        });
+        const data2 = await response2.json();
+        if (data2.image_url) {
+          img.src = data2.image_url;
+          img.style.display = "block";
+
+          // Show success message
+          statusDiv.textContent = "✅ Image generated successfully!";
+
+          // Create action buttons container
+          const actionsContainer = document.createElement("div");
+          actionsContainer.className = "mt-3 d-flex justify-content-center gap-3 flex-wrap";
+
+          // Download button
+          const downloadBtn = document.createElement("a");
+          downloadBtn.href = data2.image_url;
+          downloadBtn.download = "generated_image.png";
+          downloadBtn.className = "btn btn-outline-primary";
+          downloadBtn.textContent = "⬇️ Download Image";
+
+          // Edit button
+          const editBtn = document.createElement("a");
+          editBtn.href = `{% url 'editing' design.id %}`;  // <-- Replace with correct edit URL pattern
+          editBtn.className = "btn btn-outline-secondary";
+          editBtn.textContent = "✏️ Edit Image";
+
+          // Append buttons
+          actionsContainer.appendChild(downloadBtn);
+          actionsContainer.appendChild(editBtn);
+
+          // Append to page (e.g., below image-wrapper)
+          document.getElementById("image-wrapper").after(actionsContainer);
+
+
+          statusDiv.textContent = "✅ Image generated successfully!";
+        } else {
+          statusDiv.textContent = "❌ Error: " + (data2.error || "Unknown error.");
+        }
+      } catch (err) {
+        statusDiv.textContent = "❌ Network error: " + err.message;
+      }
+    });
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const mainContent = document.getElementById("main-content");
+      sidebar.classList.toggle("active");
+      mainContent.classList.toggle("shifted");
+    }
+  </script>
+{% endblock  %}
+  

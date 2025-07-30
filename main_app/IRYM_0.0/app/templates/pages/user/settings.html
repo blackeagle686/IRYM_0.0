@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content" id="main-content">
+  <h1 class="section-title">⚙️ User Settings</h1>
+
+  <div class="profile-card">
+    <div class="text-center mb-4">
+      <img id="preview-image" src="{{ client.image|default_if_none:'user_image/default.png' }}" class="profile-img" alt="Profile Image">
+    </div>
+    <h4 class="text-center">{{ client.fullname }}</h4>
+    <p class="text-center text-primary ">{{ client.username }}</p>
+  </div>
+  {% csrf_token %}
+  <form id="user-settings-form" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="first_name" class="form-label">First Name</label>
+      <input type="text" class="form-control" id="first_name" name="first_name" value="{{ client.fname }}">
+    </div>
+    <div class="mb-3">
+      <label for="last_name" class="form-label">Last Name</label>
+      <input type="text" class="form-control" id="last_name" name="last_name" value="{{ client.lname }}">
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">UserName</label>
+      <input type="email" class="form-control" id="email" name="email" value="{{ client.username }}">
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Profile Image</label>
+      <input type="file" class="form-control" id="image" name="user_image">
+    </div>
+    <button type="submit" class="btn btn-generate">💾 Save Changes</button>
+    <div id="save-status" class="mt-3 text-info"></div>
+  </form>
+</main>
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  const form = document.getElementById('user-settings-form');
+  const statusDiv = document.getElementById('save-status');
+  const preview = document.getElementById('preview-image');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    statusDiv.textContent = '🔄 Saving...';
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("{% url 'user_detail_api' user_id %}", {
+        method: "PUT",
+        headers: {
+          "X-CSRFToken": csrftoken
+        },
+        body: formData,
+      });
+
+      const contentType = response.headers.get("content-type");
+
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        console.log("✅ Success:", data);
+        statusDiv.textContent = "✅ Saved successfully!";
+      } else {
+        const text = await response.text();
+        console.error("❌ Not JSON:", text);
+        statusDiv.textContent = "❌ Unexpected response format.";
+      }
+
+    } catch (error) {
+      console.error("❌ Network error:", error);
+      statusDiv.textContent = "❌ Network error occurred.";
+    }
+  });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,327 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up</title>
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  body {
+    background: linear-gradient(135deg, #2B2F38, #2B2F38);
+    background-attachment: fixed;
+    color: #EEEEEE;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin: 0;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .full-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 90vh;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    box-shadow: 0 0 25px rgba(0, 173, 181, 0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .signup-image {
+    width: 50%;
+    background-color: #2B2F38;
+  }
+
+  .signup-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .signup-form-wrapper {
+    background-color: #2B2F38;
+    padding: 50px 40px;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .signup-card {
+    width: 100%;
+    max-width: 460px;
+    color: #EEEEEE;
+    z-index: 2;
+  }
+
+  .signup-card h2 {
+    color: #00ADB5;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .signup-card p {
+    color: #CCCCCC;
+    margin-bottom: 25px;
+  }
+
+  .form-label {
+    color: #DDDDDD;
+    font-weight: 600;
+  }
+
+  .form-control {
+    background-color: #393E46;
+    border: none;
+    color: #EEEEEE;
+    box-shadow: inset 0 0 4px rgba(0, 173, 181, 0.2);
+  }
+
+  .form-control::placeholder {
+    color: #aaa;
+  }
+
+  .form-control:focus {
+    border: 1px solid #00ADB5;
+    box-shadow: 0 0 0 0.25rem rgba(0, 173, 181, 0.25);
+  }
+
+  .btn-signup {
+    background-color: #00ADB5;
+    color: #222831;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0 0 12px rgba(0, 173, 181, 0.3);
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  .btn-signup:hover {
+    background-color: #00cfd6;
+    box-shadow: 0 0 18px rgba(0, 173, 181, 0.6);
+  }
+
+  .login-link {
+    text-align: center;
+    margin-top: 15px;
+    color: #AAAAAA;
+  }
+
+  .login-link a {
+    color: #00ADB5;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+
+  /* 🎯 Decorative Circles */
+  .signup-form-wrapper::before,
+  .signup-form-wrapper::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+    background: rgba(0, 173, 181, 0.1);
+  }
+
+  .signup-form-wrapper::before {
+    width: 120px;
+    height: 120px;
+    top: -30px;
+    left: -30px;
+  }
+
+  .signup-form-wrapper::after {
+    width: 100px;
+    height: 100px;
+    bottom: -40px;
+    right: -40px;
+  }
+
+  .extra-circle {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(0, 173, 181, 0.1);
+    z-index: 0;
+  }
+
+  .circle-top-right {
+    top: 30px;
+    right: 30px;
+  }
+
+  .circle-bottom-left {
+    bottom: 30px;
+    left: 30px;
+  }
+
+  /* 🧠 Responsive Design */
+  @media (max-width: 768px) {
+    .full-wrapper {
+      flex-direction: column-reverse;
+    }
+
+    .signup-image, .signup-form-wrapper {
+      width: 100%;
+      height: auto;
+    }
+
+    .signup-image img {
+      max-height: 300px;
+    }
+
+    .signup-form-wrapper {
+      padding: 30px 20px;
+    }
+
+    .signup-form-wrapper::before,
+    .signup-form-wrapper::after {
+      display: none;
+    }
+  }
+
+  .logo-area {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+
+  .logo-img {
+    height: 40px;
+    width: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .logo-area h6 {
+    border-radius: 8px;
+    padding: 5px;
+    margin: 0;
+    font-size: 18px;
+    color: lightgray;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+
+<body>
+  <div class="full-wrapper">
+    <!-- Image Column -->
+    <div class="signup-image">
+      <img src="{% static 'images/signup_bg.jpg' %}" alt="Signup Illustration">
+    </div>
+
+    <!-- Form Column -->
+    <div class="signup-form-wrapper">
+      <!-- Logo Area -->
+      <div class="logo-area">
+            <h6> IRYM 0.1<h6>
+        <img src="{% static 'images/my_icon_nobg.png' %}" alt="Logo" class="logo-img"> 
+      </div>
+
+      <div class="signup-card">
+        <form id="signup-form" class="signup-form">
+          <h2 class="text-center">Create Account </h2>
+          <p class="text-center">Join us and start your journey</p>
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" class="form-control" placeholder="Choose a username" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="firstname" class="form-label">First Name</label>
+            <input type="text" id="firstname" class="form-control" placeholder="Enter your first name" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="lastname" class="form-label">Last Name</label>
+            <input type="text" id="lastname" class="form-control" placeholder="Enter your last name" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" class="form-control" placeholder="Create a password" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="confirm-password" class="form-label">Confirm Password</label>
+            <input type="password" id="confirm-password" class="form-control" placeholder="Repeat your password" required />
+          </div>
+
+          <button type="submit" class="btn btn-signup w-100 mt-3">Sign Up</button>
+
+          <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    document.getElementById("signup-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const first_name = document.getElementById("firstname").value;
+      const last_name = document.getElementById("lastname").value;
+      const password = document.getElementById("password").value;
+      const password2 = document.getElementById("confirm-password").value;
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+      fetch("/user/register/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken ? { "X-CSRFToken": csrfToken } : {})
+        },
+        body: JSON.stringify({
+          username,
+          first_name,
+          last_name,
+          password,
+          password2
+        }),
+      })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then(err => { throw err });
+        }
+        return res.json();
+      })
+      .then((data) => {
+        window.location.href = "/user/login/";
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert(error.error || "Signup failed. Please try again.");
+      });
+    });
+  </script>
+
+</body>
+</html>

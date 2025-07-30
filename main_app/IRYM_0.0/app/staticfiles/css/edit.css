@@ -1,0 +1,111 @@
+/* Reset & Layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  /* background-color: #1E2130; */
+  background-attachment: fixed;
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Main content wrapper that grows to push the form down */
+.edit-main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px;
+}
+
+/* Title Styling */
+h2.section-title {
+  color: #7DA3FF;
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  font-weight: 600;
+  border-left: 4px solid #7DA3FF;
+  padding-left: 12px;
+}
+
+/* Preview box styling */
+.preview {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 12px;
+  border: 2px solid #7DA3FF;
+  margin-bottom: 40px;
+  background-color: #2A2F45;
+  padding: 6px;
+  box-shadow: 0 0 10px rgba(125, 163, 255, 0.25);
+
+}
+
+/* Form Section fixed at the bottom */
+.editform-section {
+  background-color: #2a2f4500;
+  width: 100%;
+  height: fit-content;
+  padding: 1vw 1vw;
+  border-top: 1px solid #3a466895;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+/* Form Wrapper */
+.edit-form {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* تقليل المسافة بين عناصر الفورم */
+}
+
+
+/* Label Styling */
+.edit-form label {
+  color: #aab4d6;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* Textarea Styling */
+.edit-form textarea {
+  background-color: #333b5ca1;
+  color: #E5E7EB;
+  border: none;
+  border-radius: 8px;
+  padding: 5px;
+  font-size: 14px; /* تصغير الخط */
+  resize: vertical;
+  box-shadow: 0 0 8px rgba(125, 163, 255, 0.1);
+  min-height: 3vw; /* تصغير الارتفاع الأدنى */
+}
+/* Placeholder Styling */
+.edit-form textarea::placeholder {
+  color: #aab4d6;
+}
+
+/* Button Styling */
+.btn-edit {
+  background: linear-gradient(135deg, #7DA3FF, #6C91E8);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(125, 163, 255, 0.3);
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  cursor: pointer;
+}
+
+.btn-edit:hover {
+  background: linear-gradient(135deg, #91B5FF, #7DA3FF);
+  transform: scale(1.02);
+  box-shadow: 0 0 18px rgba(125, 163, 255, 0.6);
+}

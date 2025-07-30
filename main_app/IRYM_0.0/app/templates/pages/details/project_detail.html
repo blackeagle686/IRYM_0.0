@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 1000px;">
+
+  
+  <div class="mb-4" style="text-align:center;">
+    <h1 style="color: #00ADB5; font-weight:bolder; border-left: 10px solid #00ADB5; border-right: 10px solid #00ADB5; padding:5px;">{{ project.title }}</h1>
+    <p class="text-white"><b>Created at:</b> {{ project.created_at|date:"M d, Y - H:i" }}</p>
+    <p><strong>Description:</strong> {{ project.description|default:"No description" }}</p>
+    <p><strong>Goal:</strong> {{ project.goal|default:"-" }}</p>
+    <p><strong>Status:</strong> <span class="badge bg-secondary">{{ project.status }}</span></p>
+
+    <!-- Continue Working Button -->
+    <!-- Edit Project Info Button -->
+    <button class="me-2 btn-continue-working" style="width:50px; text-align:center; padding:10px; height:50px; border-radius:50%" data-bs-toggle="modal" data-bs-target="#editProjectModal">
+    ✏️ 
+   </button>
+
+    <a href="{% url 'project_view' project.id %}" class="btn-continue-working">🚀 Continue Working</a>
+
+    <!-- Edit Project Modal -->
+    <div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editProjectModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+          <form method="POST" action="{% url 'update_project' project.id %}">
+            {% csrf_token %}
+            <div class="modal-header border-0">
+              <h5 class="modal-title" id="editProjectModalLabel">Edit Project Information</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="id_title" class="form-label">Title</label>
+                <input type="text" name="title" class="form-control" id="id_title" value="{{ project.title }}">
+              </div>
+              <div class="mb-3">
+                <label for="id_goal" class="form-label">Goal</label>
+                <input type="text" name="goal" class="form-control" id="id_goal" value="{{ project.goal }}">
+              </div>
+              <div class="mb-3">
+                <label for="id_description" class="form-label">Description</label>
+                <textarea name="description" class="form-control" rows="3" id="id_description">{{ project.description }}</textarea>
+              </div>
+              <div class="mb-3">
+                <label for="id_status" class="form-label">Status</label>
+                <select name="status" class="form-select" id="id_status">
+                  <option value="active" {% if project.status == 'active' %}selected{% endif %}>Active</option>
+                  <option value="paused" {% if project.status == 'paused' %}selected{% endif %}>Paused</option>
+                  <option value="completed" {% if project.status == 'completed' %}selected{% endif %}>Completed</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer border-0">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr style="border-color: #00ADB5;">
+
+{% if data %}
+  <h2 class="mt-4 mb-3" style="font-weight:bolder; color: #00ADB5;">Your Work</h2>
+  {% for item in data %}
+    <div class="mb-5 p-3 rounded" style="background-color: #ffffff05;">
+      <h5 style="color: #00ADB5;">📝 Prompt {{ forloop.counter }}: {{ item.prompt.prompt_text }}</h5>
+      <p><strong>Style:</strong> {{ item.prompt.style|default:"-" }}</p>
+
+      {% if item.images %}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+          {% for img in item.images %}
+            <div class="col">
+              <div class="position-relative group border border-info rounded shadow" style="overflow: hidden;">
+                <img src="{{ img.image.url }}" class="img-fluid rounded" style="object-fit: cover; height: 250px; width: 100%; border: 2px solid #00ADB5; box-shadow: 0 0 10px #00ADB5aa; transition: transform 0.3s;">
+                
+                <!-- Hover Buttons -->
+                <div class="position-absolute bottom-0 start-0 m-2 d-flex flex-wrap gap-2 bg-dark bg-opacity-25 rounded shadow p-2" style="opacity: 1; transition: opacity 0.3s;" data-hover-buttons>
+                  <a class="btn btn-outline-info btn-sm rounded-pill px-3 fw-bold" href="{% url 'edit_project_with_ai' img.id %}">🛠 Edit with AI</a>
+                  <a class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-bold" href="{% url 'edit_room' img.id %}">🎨 Custom Edit</a>
+                  <a class="btn btn-outline-success btn-sm rounded-pill px-3 fw-bold" href="{{ img.image.url }}" download>⬇ Download</a>
+                </div>
+
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-warn">No images yet for this prompt.</p>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% else %}
+  <p class="text-muted">No prompts added to this project yet.</p>
+{% endif %}
+
+  
+  
+  
+</div>
+
+  <div class="mb-4" style="text-align:center;">
+    <h1 style="color: #00ADB5; font-weight:bolder;  padding:5px;">{{ project.title }}</h1>
+    <p class="text-white"><b>Created at:</b> {{ project.created_at|date:"M d, Y - H:i" }}</p>
+    <p><strong>Description:</strong> {{ project.description|default:"No description" }}</p>
+    <p><strong>Goal:</strong> {{ project.goal|default:"-" }}</p>
+    <p><strong>Status:</strong> <span class="badge bg-secondary">{{ project.status }}</span></p>
+  </div>
+<a href="{% url 'project_view' project.id %}" target="blank" class=" goTopBtn" style="text-align:center;">🚀</a>
+{% endblock %}

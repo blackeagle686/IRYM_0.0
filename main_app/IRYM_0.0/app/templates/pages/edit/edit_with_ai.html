@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+<head> 
+  <link rel="stylesheet" href="{% static 'css/edit.css' %}">
+</head>
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="text-light mb-4"
+      style="
+        border-left:10px solid cyan;
+        border-right:10px solid cyan;
+        padding:10px;
+        border-radius:20px;
+        font-weight:bolder;
+        text-align:center;
+        background: linear-gradient(270deg, purple, cyan);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      ">
+    Edit Your Image with AI
+  </h2>
+
+  {% if edited_image and old_image %}
+  <div class="row mb-5">
+    <!-- Original Image -->
+    <div class="col-md-6">
+      <div class="card shadow-sm" style="background-color: #2B2F38; border: none;">
+        <div class="card-body text-center">
+          <h5 class="card-title text-light">📷 Original Image</h5>
+          <img src="{{ old_image }}" class="img-fluid rounded my-3 border border-secondary" style="max-width: 100%; max-height: 500px;" alt="Original Image">
+        </div>
+      </div>
+    </div>
+
+    <!-- Edited Image -->
+    <div class="col-md-6">
+      <div class="card shadow-sm" style="background-color: #2B2F38; border: none;">
+        <div class="card-body text-center">
+          <h5 class="card-title text-light">✅ Edited Image</h5>
+          <img src="{{ edited_image }}" class="img-fluid rounded my-3 border border-secondary" style="max-width: 100%; max-height: 500px;" alt="Edited Image">
+          <a href="{{ edited_image }}" download class="btn btn-success mt-2">
+            <i class="bi bi-download"></i> Download Edited Image
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Preview Before Edit -->
+  <div class="mb-4">
+    <label class="form-label text-light">Image Preview Before Edit</label>
+    <img id="previewImage" class="img-fluid rounded border border-info" style="max-height: 400px; display: none;" alt="Preview">
+  </div>
+
+  <!-- Edit Form -->
+  <div class="card p-1 shadow-lg rounded-5 border-0" style="background-color: #2c2f3315;">
+    <h4 class="text-light mb-4"><i class="bi bi-brush-fill me-2"></i>Apply Edits</h4>
+
+    <form method="POST" enctype="multipart/form-data" id="editForm">
+      {% csrf_token %}
+
+      <!-- Image Field -->
+      <div class="mb-4">
+        <label class="form-label text-light">{{ form.image.label }}</label>
+        {{ form.image }}
+        {% if form.image.errors %}
+          <div class="text-danger mt-2 small">{{ form.image.errors }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Prompt Field -->
+      <div class="mb-4">
+        <label class="form-label text-light">{{ form.prompt.label }}</label>
+        {{ form.prompt|add_class:"form-control bg-dark text-white border-secondary shadow-sm"|attr:"placeholder:What do you want to improve?" }}
+        {% if form.prompt.errors %}
+          <div class="text-danger mt-2 small">{{ form.prompt.errors }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" style="background: linear-gradient(270deg, purple, cyan);" class="btn btn-gradient w-100 fw-semibold">
+        <i class="bi bi-magic me-2"></i>Apply Edit
+      </button>
+    </form>
+  </div>
+</div>
+
+
+<script>
+  const input = document.querySelector('input[type="file"]');
+  const preview = document.getElementById('previewImage');
+
+  input.addEventListener('change', () => {
+    const file = input.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = '';
+      preview.style.display = 'none';
+    }
+  });
+</script>
+
+{% endblock %}
+

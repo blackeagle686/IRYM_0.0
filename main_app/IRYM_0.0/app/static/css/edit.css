@@ -1,0 +1,142 @@
+/* ========== Reset & Layout ========== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-attachment: fixed;
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ========== Main Content Area ========== */
+.edit-main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px;
+}
+
+/* ========== Section Title ========== */
+h2.section-title {
+  color: #7DA3FF;
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  font-weight: 600;
+  border-left: 4px solid #7DA3FF;
+  padding-left: 12px;
+}
+
+/* ========== Preview Box ========== */
+.preview {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 12px;
+  border: 2px solid #7DA3FF;
+  margin-bottom: 40px;
+  background-color: #2A2F45;
+  padding: 6px;
+  box-shadow: 0 0 10px rgba(125, 163, 255, 0.25);
+}
+
+/* ========== Form Section (Sticky Bottom) ========== */
+.editform-section {
+  background-color: transparent;
+  width: 100%;
+  padding: 1vw;
+  border-top: 1px solid rgba(58, 70, 104, 0.58);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+/* ========== Form Container ========== */
+.edit-form {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ========== Label Styling ========== */
+.edit-form label {
+  color: #aab4d6;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* ========== Input & Textarea Styling ========== */
+.edit-form input,
+.edit-form textarea {
+  background-color: #1e1f24;
+  color: #E5E7EB;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+  font-size: 14px;
+  resize: vertical;
+  box-shadow: 0 0 8px rgba(125, 163, 255, 0.1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus {
+  outline: none;
+  border-color: #9d00ff;
+  box-shadow: 0 0 0 0.2rem rgba(157, 0, 255, 0.3);
+}
+
+/* ========== Placeholder ========== */
+.edit-form textarea::placeholder,
+.edit-form input::placeholder {
+  color: #aab4d6;
+}
+
+/* ========== Primary Gradient Button ========== */
+.edit-button {
+  background: linear-gradient(135deg, #7DA3FF, #6C91E8);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(125, 163, 255, 0.3);
+  transition: all 0.2s ease-in-out;
+  width: 150%;
+  cursor: pointer;
+  position: relative;
+  top:10px;
+  
+}
+
+.edit-button:hover {
+  background: linear-gradient(135deg, #91B5FF, #7DA3FF);
+  transform: scale(1.02);
+  box-shadow: 0 0 18px rgba(125, 163, 255, 0.6);
+}
+
+/* ========== Optional Secondary Gradient Button (if needed) ========== */
+.btn-gradient {
+  background: linear-gradient(to right, #9d00ff, #ff004c);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+}
+
+.btn-gradient:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.image-title{
+  width:200px; 
+  padding:5px;
+  border-radius: 5px;
+  border-left: 10px solid cyan;
+}
