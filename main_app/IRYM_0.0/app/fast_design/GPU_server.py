@@ -57,7 +57,7 @@ def generate_image_fast_design(prompt, design):
         )
         
         if response.status_code == 200:
-            generated_image = response.json().get("image_base6")
+            generated_image = response.json().get("image_base64")
             return handle_image(generated_image, design, prompt_obj_txt=prompt)
         else:
             print("Error:", response.status_code, response.text)

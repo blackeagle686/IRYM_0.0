@@ -28,7 +28,7 @@ ng_key = settings.NGROK_KEY
 
 def generate_multi_images(prompt):
     # send the prmopt to the model on FastAPI endpint on GpuRuntime using googleColab
-    response = requests.post(f"{ng_key}/multi_image_generation", json={"text": prompt}, timeout=90)
+    response = requests.post(f"{ng_key}/multi_image_generation", json={"text": prompt}, timeout=120)
     
     #check if response is successful
     if response.status_code != 200:
