@@ -24,7 +24,7 @@
   {% with project.prompts.last as prompt %}
     {% if prompt %}
       <div class="mb-5 w-100 mx-auto" style="max-width: 900px;">
-        <h5 class="text-info mb-4 text-center"><strong>Your last design:</strong> {{ prompt.prompt_text }}</h5>
+        <h5 class="last-gerated-project-info text-info mb-4 text-center"><strong>Your last design:</strong> {{ prompt.prompt_text }}</h5>
 
         {% if prompt.images.all %}
           <!-- Grid of Images -->

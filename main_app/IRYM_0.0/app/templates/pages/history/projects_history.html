@@ -36,7 +36,6 @@
            style="background-color: #2B2F38; color: #EEEEEE; border-collapse: collapse; min-width: 800px;">
       <thead style="background-color: #222831;">
         <tr>
-          <th style="color:white; font-weight: 600;">#</th>
           <th style="color:white; font-weight: 600;">Project Name</th>
           <th style="color:white; font-weight: 600;">Created</th>
           <th style="color:white; font-weight: 600;">View</th>
@@ -45,7 +44,6 @@
       <tbody>
         {% for project in projects %}
           <tr style="border-top: 1px solid #393E46;">
-            <th scope="row" style="color:white;">{{ forloop.counter }}</th>
             <td>{{ project.title}}</td>
             <td>{{ project.created_at|date:"M d, Y - H:i" }}</td>
             <td>

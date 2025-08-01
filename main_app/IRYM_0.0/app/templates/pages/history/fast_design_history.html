@@ -31,79 +31,42 @@
   <!-- Table or No Chat -->
   {% if designs %}
     <div class="table-responsive" style="border-radius: 12px; overflow-x: auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
-      <table class="table chat-table w-100"
-             style="background-color: #2B2F38; color: #EEEEEE; border-collapse: collapse; min-width: 800px;">
+      <table class="table chat-table w-100" style="background-color: #2B2F38; color: #EEEEEE; border-collapse: collapse;">
         <thead style="background-color: #222831;">
           <tr>
-            <th style="color:rgb(255, 255, 255); font-weight: 600;">#</th>
-            <th style="color:rgb(255, 255, 255); font-weight: 600;">Title</th>
-            <th style="color:rgb(255, 255, 255); font-weight: 600;">Go</th>
+            <th style="color: #fff; font-weight: 600;">Title</th>
+            <th style="color: #fff; font-weight: 600;">Go</th>
           </tr>
         </thead>
         <tbody>
           {% for design in designs %}
             <tr style="border-top: 1px solid #393E46;">
-              <th scope="row" style="color:white;" >{{ forloop.counter }}</th>
               <td style="text-align:center;">{{ design.title|default:"Untitled design" }}</td>
               <td>
                 <a href="{% url 'design_view' design.id %}"
-                   class="btn btn-sm"
-                   style="
-                     border: 1px solid #00ADB5;
-                     color: #00ADB5;
-                     font-weight: 500;
-                     transition: all 0.2s ease;
-                   "
-                   onmouseover="this.style.backgroundColor='#00ADB5'; this.style.color='#222831';"
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#00ADB5';"
-                method="POST">Go </a>
+                  class="btn btn-sm"
+                  style="
+                    border: 1px solid #00ADB5;
+                    color: #00ADB5;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                  "
+                  onmouseover="this.style.backgroundColor='#00ADB5'; this.style.color='#222831';"
+                  onmouseout="this.style.backgroundColor='transparent'; this.style.color='#00ADB5';">
+                  Go
+                </a>
               </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+
   {% else %}
     <p class="no-chats text-center" style="color: #AAAAAA; margin-top: 20px;">
       You have no designs yet. Start a new one!
     </p>
   {% endif %}
-
-
-<!-- Last Projects Table -->
-{% if projects %}
-  <h3 class="mt-5 mb-3" style="color: #EEEEEE;">📁 Last Projects</h3>
-  <div class="table-responsive" style="border-radius: 12px; overflow-x: auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
-    <table class="table project-table w-100"
-           style="background-color: #2B2F38; color: #EEEEEE; border-collapse: collapse; min-width: 800px;">
-      <thead style="background-color: #222831;">
-        <tr>
-          <th style="color:white; font-weight: 600;">#</th>
-          <th style="color:white; font-weight: 600;">Project Name</th>
-          <th style="color:white; font-weight: 600;">Created</th>
-          <th style="color:white; font-weight: 600;">View</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for project in projects %}
-          <tr style="border-top: 1px solid #393E46;">
-            <th scope="row" style="color:white;">{{ forloop.counter }}</th>
-            <td>{{ project.name|default:"Untitled project" }}</td>
-            <td>{{ project.created_at|date:"M d, Y - H:i" }}</td>
-            <td>
-              <a href="{% url 'project_detail' project.id %}" class="btn btn-sm"
-                 style="border: 1px solid #00ADB5; color: #00ADB5; font-weight: 500; transition: all 0.2s ease;"
-                 onmouseover="this.style.backgroundColor='#00ADB5'; this.style.color='#222831';"
-                 onmouseout="this.style.backgroundColor='transparent'; this.style.color='#00ADB5';">
-                Open
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-{% endif %}
 
 
 

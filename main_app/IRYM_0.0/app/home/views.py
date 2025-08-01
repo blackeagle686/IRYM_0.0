@@ -91,7 +91,7 @@ def logs_view(request):
     
 
 def hello(request):
-    return render(request, templates["hello"])
+    return render(request, templates["hello"], context={'title':"IRYM 0"})
 
 
 

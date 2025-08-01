@@ -5,7 +5,7 @@
 <main class="main-content" id="main-content">
   <h1 class="section-title">⚙️ User Settings</h1>
 
-  <div class="profile-card">
+  <div class="profile-card setting-card">
     <div class="text-center mb-4">
       <img id="preview-image" src="{{ client.image|default_if_none:'user_image/default.png' }}" class="profile-img" alt="Profile Image">
     </div>
@@ -23,7 +23,7 @@
       <input type="text" class="form-control" id="last_name" name="last_name" value="{{ client.lname }}">
     </div>
     <div class="mb-3">
-      <label for="email" class="form-label">UserName</label>
+      <label for="email" class="form-label">Email</label>
       <input type="email" class="form-control" id="email" name="email" value="{{ client.username }}">
     </div>
     <div class="mb-3">
@@ -34,6 +34,7 @@
     <div id="save-status" class="mt-3 text-info"></div>
   </form>
 </main>
+
 <script>
   function getCookie(name) {
     let cookieValue = null;
@@ -49,8 +50,8 @@
     }
     return cookieValue;
   }
-  const csrftoken = getCookie('csrftoken');
 
+  const csrftoken = getCookie('csrftoken');
   const form = document.getElementById('user-settings-form');
   const statusDiv = document.getElementById('save-status');
   const preview = document.getElementById('preview-image');
@@ -76,6 +77,7 @@
         const data = await response.json();
         console.log("✅ Success:", data);
         statusDiv.textContent = "✅ Saved successfully!";
+        setTimeout(() => location.reload(), 1000);  // Reload after 1 second
       } else {
         const text = await response.text();
         console.error("❌ Not JSON:", text);
@@ -88,6 +90,5 @@
     }
   });
 </script>
-
 
 {% endblock %}

@@ -64,6 +64,11 @@ body {
 }
 
 /* Main */
+.container{
+  max-width: 100% !important;
+
+}
+
 .main-content {
   /* margin-left: 0; */
   padding: 40px 20px;
@@ -73,7 +78,6 @@ body {
 .main-content.shifted {
   margin-left: 250px;
 }
-
 /* Form & Buttons */
 .form-control {
   background-color: #ffffff;
@@ -527,6 +531,8 @@ body {
   color: white;
 }
 
+
+
 /* New_project image style */
 
 .img-thumb-style {
@@ -542,9 +548,12 @@ body {
   will-change: transform;
 }
 
-.text-center{
-  color:#111 !important;
+.text-center h2{
+  color:#ffffff !important;
   z-index: 1000;
+}
+strong, h5{
+  color: black !important;
 }
 /* عند التحويم */
 .img-thumb-style:hover {
@@ -608,6 +617,22 @@ body {
 .iry-img-actions a:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 10px #00ADB5aa;
+}
+
+.group:hover img {
+    transform: scale(3);
+}
+
+.group:hover [data-hover-buttons] {
+    opacity: 1;
+}
+
+[data-hover-buttons] {
+    pointer-events: none;
+}
+
+.group:hover [data-hover-buttons] {
+    pointer-events: auto;
 }
 
 /* =========================================== Edit Room ===========================*/
@@ -723,4 +748,40 @@ input[type="file"]::file-selector-button:hover {
   .editor-image {
     aspect-ratio: 1 / 1;
   }
+}
+
+
+.edit-with-ai-card{
+  background-color: #84f1f780 !important;
+  padding: 30px !important;
+}
+
+.edit-with-ai-card  h4{
+  color: #1a1a2e !important;
+}
+
+.text-white{
+  color:#d1eaff !important; 
+}
+
+.modal-content{
+  background-color: #84f1f7 !important;
+}
+
+
+.custom-image {
+    
+    border: 2px solid #00ADB5;
+    box-shadow: 0 0 10px #00ADB5aa;
+    transition: transform 0.3s ease;
+}
+
+.custom-image:hover {
+    transform: scale(3);
+    position: relative;
+}
+
+.time_p {
+  color: #00ADB5 !important;
+  font-weight: bold;
 }

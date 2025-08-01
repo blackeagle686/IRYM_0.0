@@ -2,29 +2,20 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-dark px-3 d-flex justify-content-between align-items-center"
-     style="background-color: #222831; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+     style="">
 
   <!-- Left Side: Toggle + Welcome Message -->
-  <div class="d-flex align-items-center gap-3">
+  <div id="nav-info" class="d-flex align-items-center gap-3">
     <button class="btn"
             onclick="toggleSidebar()"
-            style="
-              border: 1px solid #00ADB5;
-              color: #00ADB5;
-              font-weight: bold;
-              background-color: transparent;
-              border-radius: 6px;
-              padding: 6px 12px;
-              transition: all 0.3s ease;
-            "
-            onmouseover="this.style.backgroundColor='#00ADB5'; this.style.color='#222831';"
-            onmouseout="this.style.backgroundColor='transparent'; this.style.color='#00ADB5';">
+            id="sidebar-toggle"
+            >
       ☰
     </button>
 
     {% if user.is_authenticated %}
-      <span style="color: #2e8580ff;">
-        Welcome <span style="color: #00ADB5; font-weight:bolder;">{{ user.get_full_name }}</span>
+      <span class="welcome-word" style="color: #2e8580ff;">
+        Welcome <span>{{ user.get_full_name }}</span>
       </span>
     {% else %}
       <span style="color: #FF6B6B;">Not logged in</span>
@@ -37,6 +28,7 @@
          alt="Site Icon" 
          style="height: 56px; filter: drop-shadow(0 0 4px rgba(0,173,181,0.5));">
   </div>
+
 </nav>
 
 
@@ -56,7 +48,7 @@
     </li>
     <li class="nav-item">
       <a class="nav-link text-light" href="{% url 'edit_with_ai_upload_image'  %}">
-        <i class="fas fa-wand-magic-sparkles text-warning"></i> Edit with AI <br> <span style="color:orange;"> new ✨ </span> 
+        <i class="fas fa-wand-magic-sparkles text-warning"></i> Edit with AI  
       </a>
     </li>
     <li class="nav-item">
@@ -100,16 +92,62 @@
       </a>
     </li>
   {% endif %}
-  <li class="nav-item">
-    <button id="theme-toggle" class="btn btn-sm btn-outline-info w-100 mt-3">
-      <i class="bi bi-moon-fill me-2"></i> Switch Theme
-    </button>
-  </li>
+
+
+<div class="dropdown my-3">
+  <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="bi bi-palette-fill me-2"></i> Change Theme
+  </button>
+<ul class="dropdown-menu shadow">
+  <li><button class="dropdown-item" onclick="setTheme('dark')">
+    <i class="bi bi-moon-stars-fill me-2"></i>Dark Mode</button></li>
+  <li><button class="dropdown-item" onclick="setTheme('light')">
+    <i class="bi bi-brightness-high-fill me-2"></i>Mid-night Mode</button></li>
+  <li><button class="dropdown-item" onclick="setTheme('sunset')">
+    <i class="bi bi-sunset-fill me-2"></i>Light Mode</button></li>
+  <li><button class="dropdown-item" onclick="setTheme('berry')">
+    <i class="bi bi-flower1 me-2"></i>Berry Mode</button></li>
+</ul>
+
+</div>
+
+
+
+
+
+
 </ul>
 
 
 
 </div>
+
+
+<script>
+  const themeStorageKey = 'preferredTheme';
+
+  function setTheme(themeName) {
+    const root = document.documentElement;
+
+    // Remove all theme classes
+    root.classList.remove('theme-dark', 'theme-light', 'theme-sunset', 'theme-berry');
+
+    // Add the selected theme class
+    root.classList.add(`theme-${themeName}`);
+
+    // Save preference
+    localStorage.setItem(themeStorageKey, themeName);
+  }
+
+  // Load theme on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem(themeStorageKey) || 'dark';
+    setTheme(savedTheme);
+  });
+</script>
+
+
+
 <script>
 
   function toggleSidebar() {
