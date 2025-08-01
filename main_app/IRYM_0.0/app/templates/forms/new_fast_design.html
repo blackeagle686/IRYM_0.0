@@ -1,55 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block content %}
-<main class="main-content container py-4" id="main-content">
+<main class="fast-design-main container py-5">
 
-  <h2 class="section-title text-center mb-4">Create Fast Design</h2>
+  <h2 class="fast-design-title text-center mb-5">New Fast Design</h2>
 
-  <div class="row">
+  <div class="row justify-content-center">
     <!-- Form Column -->
-    <div class="col-md-6 mb-4">
-      <form method="post">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+    <div class="col-md-8 col-lg-6">
+      <div class="fast-design-card p-4 shadow-lg rounded-4">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form.non_field_errors }}
 
-        <div class="mb-3">
-          {{ form.title.label_tag }}
-          {{ form.title }}
-          {{ form.title.errors }}
-        </div>
-
-        <button type="submit" class="btn btn-generate mt-3" >Get started </button>
-      </form>
-    </div>
-
-    {% comment %} <!-- Images Column -->
-    <div class="col-md-6">
-      <div class="row mt-4">
-        <!-- Cities -->
-        <div class="col-6 mb-4">
-          <h5 class="text-center text-light mb-3">🌆 Cities</h5>
-          <div class="d-flex flex-wrap justify-content-center">
-            <img src="{% static 'images/cit1.jpg' %}" class="img-thumb-style">
-            <img src="{% static 'images/cit2.jpg' %}" class="img-thumb-style">
-            <img src="{% static 'images/cit3.jpg' %}" class="img-thumb-style">
-            <img src="{% static 'images/cit4.jpg' %}" class="img-thumb-style">
+          <div class="mb-4">
+            <label class="form-label fast-design-label">{{ form.title.label }}</label>
+            {{ form.title|add_class:"form-control fast-design-input" }}
+            {{ form.title.errors }}
           </div>
-        </div>
 
-
-
-        <!-- Machines -->
-        <div class="col-6 mb-4">
-          <h5 class="text-center text-light mb-3">⚙️ Machines</h5>
-          <div class="d-flex flex-wrap justify-content-center">
-            <img src="{% static 'images/mch1.jpeg' %}" class="img-thumb-style">
-            <img src="{% static 'images/mch2' %}" class="img-thumb-style">
-            <img src="{% static 'images/mch3.jpeg' %}" class="img-thumb-style">
-            <img src="{% static 'images/mch4' %}" class="img-thumb-style">
-          </div>
-        </div>
-      </div> {% endcomment %}
+          <button type="submit" class="btn fast-design-btn w-100">✨ Get Started</button>
+        </form>
+      </div>
     </div>
   </div>
 

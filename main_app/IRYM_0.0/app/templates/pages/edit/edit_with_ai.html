@@ -7,16 +7,7 @@
 
 {% block content %}
 <div class="container my-5">
-  <h2 class="text-light mb-4 edit-with-ai-uploade-files-title"
-      style="
-        padding:10px;
-        border-radius:20px;
-        font-weight:bolder;
-        text-align:center;
-        background: linear-gradient(270deg, purple, cyan);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      ">
+  <h2 class="text-light mb-4 edit-with-ai-uploade-files-title">
     Edit Your Image with AI
   </h2>
 
@@ -26,7 +17,7 @@
     <div class="col-md-6">
       <div class="card shadow-sm " style="background-color: #2B2F38; border: none;">
         <div class="card-body text-center">
-          <h5 class="card-title text-light">📷 Original Image</h5>
+          <h5 class="card-title text-light"> <i class="bi bi-camera"></i> Original Image</h5>
           <img src="{{ old_image }}" class="img-fluid rounded my-3 border border-secondary" style="max-width: 100%; max-height: 500px;" alt="Original Image">
         </div>
       </div>
@@ -36,7 +27,7 @@
     <div class="col-md-6">
       <div class="card shadow-sm" style="background-color: #2B2F38; border: none;">
         <div class="card-body text-center">
-          <h5 class="card-title text-light">✅ Edited Image</h5>
+          <h5 class="card-title text-light"><i class="bi bi-pencil-square"></i> Edited Image</h5>
           <img src="{{ edited_image }}" class="img-fluid rounded my-3 border border-secondary" style="max-width: 100%; max-height: 500px;" alt="Edited Image">
           <a href="{{ edited_image }}" download class="btn btn-success mt-2">
             <i class="bi bi-download"></i> Download Edited Image
@@ -82,10 +73,17 @@
       <button type="submit" class="edit-with-ai-uploaded-file-submit-button" style="background: linear-gradient(270deg, purple, cyan);" class="btn btn-gradient w-100 fw-semibold">
         <i class="bi bi-magic me-2"></i>Apply Edit
       </button>
+
+      <!-- Loading Box -->
+      <div id="loadingBox" class="edit-genrated-image-loading-box mt-4 d-none text-center">
+        <div class="spinner-border text-info" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="text-light mt-2 mb-0">Applying edits... Please wait</p>
+      </div>
     </form>
   </div>
 </div>
-
 
 <script>
   const input = document.querySelector('input[type="file"]');
@@ -105,7 +103,12 @@
       preview.style.display = 'none';
     }
   });
+
+  // Show loading box on form submit
+  document.getElementById("editForm").addEventListener("submit", function () {
+    const loadingBox = document.getElementById("loadingBox");
+    loadingBox.classList.remove("d-none");
+  });
 </script>
 
 {% endblock %}
-

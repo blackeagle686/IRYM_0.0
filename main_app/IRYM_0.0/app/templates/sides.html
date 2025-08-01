@@ -15,7 +15,7 @@
 
     {% if user.is_authenticated %}
       <span class="welcome-word" style="color: #2e8580ff;">
-        Welcome <span>{{ user.get_full_name }}</span>
+        Welcome <a href="{% url 'user_page' user.id %}" class=" user-fullname-navbar">{{ user.get_full_name }}</a>
       </span>
     {% else %}
       <span style="color: #FF6B6B;">Not logged in</span>
@@ -35,7 +35,9 @@
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">📂 Menu</h5>
+  <h5 class="mb-0">
+    <i class="bi bi-list me-1"></i> Menu
+  </h5>
     <button class="btn btn-sm btn-outline-light" onclick="toggleSidebar()">✖</button>
   </div>
   
@@ -61,11 +63,12 @@
         <i class="bi bi-folder-plus text-primary me-2"></i> New Project
       </a>
     </li>
-    <li class="nav-item">
+
+    {% comment %} <li class="nav-item">
       <a class="nav-link text-light" href="{% url 'fast_history'  %}">
         <i class="bi bi-clock-fill text-secondary me-2"></i> Design History
       </a>
-    </li>
+    </li> {% endcomment %}
     
     <li class="nav-item">
       <a class="nav-link text-light" href="{% url 'projects_history' %}">

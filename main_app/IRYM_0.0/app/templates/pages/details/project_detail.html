@@ -15,10 +15,11 @@
     <!-- Continue Working Button -->
     <!-- Edit Project Info Button -->
     <button class="me-2 btn-continue-working" style="width:50px; text-align:center; padding:10px; height:50px; border-radius:50%" data-bs-toggle="modal" data-bs-target="#editProjectModal">
-    ✏️ 
+    <i class="bi bi-pencil"></i>
+
    </button>
 
-    <a href="{% url 'project_view' project.id %}" class="btn-continue-working">🚀 Continue Working</a>
+    <a href="{% url 'project_view' project.id %}" class="btn-continue-working"> <i class="bi bi-play-circle me-1"></i> Continue Working</a>
 
     <!-- Edit Project Modal -->
     <div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editProjectModalLabel" aria-hidden="true">

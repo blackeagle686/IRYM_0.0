@@ -2,126 +2,97 @@
 {% load static %}
 
 {% block content %}
-<main class="main-content container py-4" id="main-content" style="color: #EEEEEE;">
-  <!-- Status + Image -->
-  
-    {% if image %}
-  
-      <div class="mt-4 text-center">
-        <div id="status" class="mb-3 fw-bold" style="color: #AAAAAA;"></div>
-        
-        <div id="image-wrapper" class="d-flex justify-content-center align-items-center" style="min-height: 300px;">
-          {% if image %}
-          <img 
-          src="{{ image }}"
-          id="result-img" 
-          alt="Generated image preview" 
-          class="img-fluid rounded shadow"
-          style="
-          width: 80vw; 
-          height: 50vw;
-          max-width: 100%; 
-          border: 2px solid #00ADB5;
-          border-radius: 12px;
-          background-color: #2B2F38;
-          padding: 6px;
-          box-shadow: 0 0 12px rgba(0, 173, 181, 0.25);
-          " />
-          
-          {% else %}
-          <img 
-          src="{% static 'images/defult.png' %}"
-          id="result-img" 
-          alt="Generated image preview" 
-          class="img-fluid rounded shadow" 
-          style="
-          max-width: 100%; 
-          display: none; 
-          border: 2px solid #00ADB5;
-          border-radius: 12px;
-          background-color: #2B2F38;
-          padding: 6px;
-          box-shadow: 0 0 12px rgba(0, 173, 181, 0.25);
-          " />
-          <h2 style="color:red; text-align:center;"> some thing went Wrong Image is not generated yet. </h2>
-          {% endif %}
-        </div>
-        <a class="edit-button" href="{% url 'fast_edit_with_ai' image_id %}"> Edit With AI</a>
+<main class="fast-design-main container py-4" id="main-content">
+
+  {% if image %}
+  <div class="mt-4 text-center">
+    <div id="status" class="mb-3 fw-bold fast-design-status-text"></div>
+
+    <!-- Loading Box -->
+    <div id="loading-box" class="fast-design-loading-box d-none">
+      <div class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
+      <p class="mt-2">Generating your image...</p>
+    </div>
+
+    <!-- Image Container -->
+    <div id="image-wrapper" class="d-flex justify-content-center align-items-center fast-design-image-container shadow rounded p-3 ">
+      {% if image %}
+      <img 
+        src="{{ image }}"
+        id="result-img" 
+        alt="Generated image preview" 
+        class="fast-design-result-img img-fluid rounded shadow" />
+      {% else %}
+      <img 
+        src="{% static 'images/defult.png' %}"
+        id="result-img" 
+        alt="Generated image preview" 
+        class="fast-design-result-img d-none img-fluid" />
+      <h2 class="text-danger text-center mt-3">Something went wrong. Image is not generated yet.</h2>
       {% endif %}
-      <!-- Form -->
-      <form id="generate-form" method="POST" class="row g-3 align-items-center">
-        <h1 style="border-left:1px solid cyan; font-align:center;"> {{design.title}} </h1>
-        {% csrf_token %}
-        
-        {% if design %}
+    </div>
+
+    <a class="fast-design-edit-button btn btn-outline-primary mt-4 px-4 py-2 rounded-pill shadow-sm" href="{% url 'fast_edit_with_ai' image_id %}">
+      ✨ Edit With AI
+    </a>
+  </div>
+  {% endif %}
+
+  <!-- Form -->
+  <form id="generate-form" method="POST" class="row g-3 align-items-center mt-5">
+    <h1 class="fast-design-section-title mb-4 text-center display-6 fw-bold">{{ design.title }}</h1>
+    {% csrf_token %}
+
+    {% if design %}
       {% with last_prompt=design.designprompts_set.last %}
         {% if last_prompt %}
-          <div class="col-12">
-            <div class="alert" 
-                title="This is your last prompt" 
-                style="background-color: #2B2F38; color: #EEEEEE; border-left: 4px solid #00ADB5; box-shadow: 0 2px 6px rgba(0, 173, 181, 0.1);">
-              <strong>{{ user.first_name }}:</strong> {{ last_prompt.prompt }}
-            </div>
+        <div class="col-12 text-center">
+          <div class="fast-design-last-prompt alert alert-secondary shadow-sm" title="This is your last prompt">
+            <strong>{{ user.first_name }}:</strong> {{ last_prompt.prompt }}
           </div>
+        </div>
         {% endif %}
       {% endwith %}
     {% endif %}
 
-    <!-- Prompt Input -->
     <div class="col-md-9 col-sm-12">
       <input 
         type="text" 
         id="prompt" 
         name="prompt" 
-        placeholder="Describe your scene" 
+        placeholder="🎨 Describe your scene..." 
         required 
-        class="form-control"
-        style="
-          background-color: #393E46; 
-          color: #EEEEEE; 
-          border: 1px solid #00ADB5;
-          border-radius: 8px;
-          padding: 12px;
-          box-shadow: 0 0 6px rgba(0, 173, 181, 0.15);
-        ">
+        class="form-control fast-design-prompt-input shadow-sm rounded-pill px-4">
     </div>
 
-    <!-- Generate Button -->
     <div class="col-md-3 col-sm-12 d-grid">
-      <button type="submit" class="btn" 
-        style="
-          background-color: #00ADB5; 
-          color: #222831; 
-          font-weight: 600; 
-          padding: 12px; 
-          border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0, 173, 181, 0.3);
-          transition: all 0.2s ease-in-out;
-        "
-        onmouseover="this.style.backgroundColor='#00cfd6'; this.style.boxShadow='0 0 14px rgba(0, 173, 181, 0.6)'"
-        onmouseout="this.style.backgroundColor='#00ADB5'; this.style.boxShadow='0 0 10px rgba(0, 173, 181, 0.3)'"
-      >
-        Generate
+      <button type="submit" class="btn btn-success fast-design-generate-btn rounded-pill shadow">
+        🚀 Generate
       </button>
     </div>
   </form>
 
   <!-- Recommendations -->
   <section class="mt-5">
-    <h5 style="color: #00ADB5;">What do you think about these features?</h5>
-    <div id="response-box" class="rounded p-3 mt-2" 
-         style="
-           background-color: #2B2F38; 
-           color: #CCCCCC; 
-           border: 1px solid #393E46; 
-           box-shadow: 0 0 8px rgba(0, 173, 181, 0.1);
-         ">
+    <h5 class="fast-design-subtitle text-muted text-center mb-3">What do you think about these features?</h5>
+    <div id="response-box" class="fast-design-recommendation-box p-3 rounded shadow-sm text-center">
       Start generating to see suggestions here.
     </div>
   </section>
 
-      
-    </main>
-    {% endblock %}
-    
+</main>
+
+<script>
+  const form = document.getElementById("generate-form");
+  const resultImg = document.getElementById("result-img");
+  const loadingBox = document.getElementById("loading-box");
+
+  form.addEventListener("submit", () => {
+    resultImg.classList.add("d-none");
+    loadingBox.classList.remove("d-none");
+    document.getElementById("status").textContent = "Generating image...";
+  });
+</script>
+{% endblock %}

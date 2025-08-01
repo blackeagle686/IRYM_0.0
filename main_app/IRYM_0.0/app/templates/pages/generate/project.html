@@ -21,31 +21,34 @@
     <button type="submit" class="btn btn-generate w-100">Generate</button>
   </form>
 
-  {% with project.prompts.last as prompt %}
-    {% if prompt %}
-      <div class="mb-5 w-100 mx-auto" style="max-width: 900px;">
-        <h5 class="last-gerated-project-info text-info mb-4 text-center"><strong>Your last design:</strong> {{ prompt.prompt_text }}</h5>
 
-        {% if prompt.images.all %}
-          <!-- Grid of Images -->
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-3">
-            {% for image in prompt.images.all %}
+  
+  
+  {% with project.prompts.last as prompt %}
+  {% if prompt %}
+  <div class="mb-5 w-100 mx-auto" style="max-width: 900px;">
+    <h5 class="last-gerated-project-info text-info mb-4 text-center"><strong>Your last design:</strong> {{ prompt.prompt_text }}</h5>
+
+    {% if prompt.images.all %}
+    <!-- Grid of Images -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-3">
+      {% for image in prompt.images.all %}
               <div class="col">
                 <div class="position-relative group border border-info rounded shadow" style="overflow: hidden;">
                   <!-- Image -->
                   <img src="{{ image.image.url }}" class="img-fluid rounded"
-                       style="object-fit: cover; height: 200px; width: 100%; border: 2px solid #00ADB5; box-shadow: 0 0 10px #00ADB5aa; transition: transform 0.3s; background-color:#222831;">
-
+                  style="object-fit: cover; height: 200px; width: 100%; border: 2px solid #00ADB5; box-shadow: 0 0 10px #00ADB5aa; transition: transform 0.3s; background-color:#222831;">
+                  
                   <!-- Hover Buttons -->
                   <div class="position-absolute bottom-0 start-0 m-2 d-flex flex-wrap gap-2 bg-dark bg-opacity-25 rounded shadow p-2"
-                       style="opacity: 1; transition: opacity 0.3s;" data-hover-buttons>
-                    <a href="{{ image.image.url }}" download class="btn btn-sm btn-outline-light rounded-pill shadow">⬇️ Download</a>
-                    <a href="{% url 'edit_project_with_ai' image.id %}" class="btn btn-sm btn-outline-info rounded-pill shadow">🤖 Edit with AI</a>
-                    <a href="{% url 'edit_room' image.id %}" class="btn btn-sm btn-outline-warning rounded-pill shadow">🎨 Custom Edit</a>
-                  </div>
-
-                  <!-- Version Label -->
-                  <div class="position-absolute bottom-0 end-0 bg-dark bg-opacity-75 text-white px-2 py-1 rounded-start">
+                  style="opacity: 1; transition: opacity 0.3s;" data-hover-buttons>
+                  <a href="{{ image.image.url }}" download class="btn btn-sm btn-outline-light rounded-pill shadow">⬇️ Download</a>
+                  <a href="{% url 'edit_project_with_ai' image.id %}" class="btn btn-sm btn-outline-info rounded-pill shadow">🤖 Edit with AI</a>
+                  <a href="{% url 'edit_room' image.id %}" class="btn btn-sm btn-outline-warning rounded-pill shadow">🎨 Custom Edit</a>
+                </div>
+                
+                <!-- Version Label -->
+                <div class="position-absolute bottom-0 end-0 bg-dark bg-opacity-75 text-white px-2 py-1 rounded-start">
                     <small>Version {{ image.version }}</small>
                   </div>
                 </div>
@@ -53,21 +56,49 @@
             {% endfor %}
           </div>
         {% else %}
-          <p class="text-muted text-center mt-3">No images available for this prompt.</p>
+        <p class="text-muted text-center mt-3">No images available for this prompt.</p>
         {% endif %}
       </div>
     {% else %}
-      {% if is_server_work %}
-        <div class="alert alert-secondary mt-2 text-center">
-          GPU server is not available. Please try again later.
-        </div>
+    {% if is_server_work %}
+    <div class="alert alert-secondary mt-2 text-center">
+      GPU server is not available. Please try again later.
+    </div>
       {% else %}
-        <div class="alert alert-success mt-2 text-center">
-          What do you want to draw ^_^.
-        </div>
+      <div class="alert alert-success mt-2 text-center">
+        What do you want to draw ^_^.
+      </div>
       {% endif %}
-    {% endif %}
-  {% endwith %}
+      {% endif %}
+      {% endwith %}
+      
+      <!-- Placeholder image grid while generating -->
+      <div id="loading-images" class="container my-5" style="display: none; max-width: 900px;">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-4">
+          {% for i in "1234" %}
+          <div class="col">
+            <div class="placeholder-box border border-info rounded shadow" style="height: 200px; background-color: #1e1e1e; display: flex; align-items: center; justify-content: center;">
+              <div class="spinner-border text-info" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      
+    </main>
+    
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('form');
+    const loadingBox = document.getElementById('loading-images');
 
-</main>
+    form.addEventListener('submit', () => {
+      loadingBox.classList.add('show');
+      loadingBox.style.display = 'block';
+    });
+  });</script>
+
 {% endblock %}
